@@ -19,7 +19,6 @@ import (
 	"github.com/smallstep/cli/jose"
 	"github.com/smallstep/cli/token"
 	"github.com/smallstep/cli/token/provision"
-	"github.com/smallstep/cli/ui"
 	"github.com/urfave/cli"
 )
 
@@ -272,12 +271,7 @@ func loadJWK(ctx *cli.Context, p *provisioner.JWK, tokAttrs tokenAttrs) (jwk *jo
 			}
 		}
 
-		// Add template with check mark
-		opts = append(opts, jose.WithUIOptions(
-			ui.WithPromptTemplates(ui.PromptTemplates()),
-		))
-
-		decrypted, err := jose.Decrypt("Please enter the password to decrypt the provisioner key", []byte(encryptedKey), opts...)
+		decrypted, err := jose.DecryptData([]byte(encryptedKey))
 		if err != nil {
 			return nil, "", err
 		}

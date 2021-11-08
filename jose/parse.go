@@ -67,6 +67,20 @@ func Decrypt(prompt string, data []byte, opts ...Option) ([]byte, error) {
 	return nil, errors.New("failed to decrypt JWK: invalid password")
 }
 
+func DecryptData(data []byte) ([]byte, error) {
+	enc, err := jose.ParseEncrypted(string(data))
+	if err != nil {
+		return data, nil
+	}
+
+	pass := []byte("123456")
+	if data, err = enc.Decrypt(pass); err == nil {
+		return data, nil
+	}
+
+	return nil, errors.New("failed to decrypt JWK: invalid password")
+}
+
 func defKeyID(jwk *JSONWebKey) error {
 	var (
 		err  error
