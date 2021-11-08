@@ -1,4 +1,4 @@
-all: lint test build
+all: build
 
 ci: test build
 
